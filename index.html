@@ -131,19 +131,6 @@ async function saveSettings(){let url=document.getElementById("contactUrl").valu
 function toast(t){let x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),2200)}
 async function resetData(){toast("البيانات الآن مربوطة بـSupabase؛ امسحها أو أضفها من لوحة الإدارة")}
 async function boot(){await loadData();const {data:{session}}=await supabaseClient.auth.getSession();if(session){const {data:isAdmin}=await supabaseClient.rpc("is_admin");if(isAdmin){document.getElementById("loginPanel").style.display="none";document.getElementById("adminPanel").style.display="block";renderAdmin()}}}
-boot();[pName,pUrl,pDesc,pVisual].forEach(x=>x.value="");toast("تمت إضافة المشروع ✅")}
-function addSkill(){let n=sName.value.trim(),i=sIcon.value.trim(),d=sDesc.value.trim();if(!n)return toast("دخل اسم المهارة");data.skills.push({name:n,icon:i||"✨",desc:d||"مهارة جديدة."});save();render();[sName,sIcon,sDesc].forEach(x=>x.value="");toast("تمت إضافة المهارة ✅")}
-function deleteProject(i){if(confirm("تحذف المشروع؟")){data.projects.splice(i,1);save();render()}}
-function deleteSkill(i){if(confirm("تحذف المهارة؟")){data.skills.splice(i,1);save();render()}}
-function renderAdmin(){
-let pl=document.getElementById("adminProjectList"),sl=document.getElementById("adminSkillList");
-if(!pl)return;pl.innerHTML=data.projects.map((p,i)=>`<div class="item"><div><b>${esc(p.name)}</b><br><small>${esc(p.url)}</small></div><button class="danger" onclick="deleteProject(${i})">حذف</button></div>`).join("");
-sl.innerHTML=data.skills.map((s,i)=>`<div class="item"><div><b>${s.icon} ${esc(s.name)}</b><br><small>${esc(s.desc)}</small></div><button class="danger" onclick="deleteSkill(${i})">حذف</button></div>`).join("");
-document.getElementById("contactUrl").value=data.settings.contactUrl||"";
-}
-function saveSettings(){data.settings.contactUrl=document.getElementById("contactUrl").value.trim();save();render();toast("تم حفظ الإعدادات ✅")}
-function resetData(){if(confirm("ترجع كل البيانات التجريبية؟")){data=JSON.parse(JSON.stringify(defaults));save();render();toast("تمت الاستعادة")}}
-function toast(t){let x=document.getElementById("toast");x.textContent=t;x.classList.add("show");setTimeout(()=>x.classList.remove("show"),2200)}
-render();
+boot();
 </script>
 </body></html>
